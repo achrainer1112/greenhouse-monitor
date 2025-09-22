@@ -8,6 +8,9 @@ on:
 env:
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
+permissions:
+  contents: write  # Erlaubt das Schreiben von Dateien
+
 jobs:
   analyze-greenhouse:
     runs-on: ubuntu-latest
