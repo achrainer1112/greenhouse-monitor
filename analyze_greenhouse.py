@@ -11,7 +11,6 @@ import base64
 from datetime import datetime
 from pathlib import Path
 import requests
-from openai import OpenAI
 
 def get_analysis_prompt():
     """Strukturierter Prompt für die Pflanzenanalyse"""
@@ -58,14 +57,21 @@ def encode_image_base64(image_path):
         return None
 
 def analyze_with_openai(image_base64):
-    """Bildanalyse mit OpenAI GPT-4 Vision"""
+    """Bildanalyse mit OpenAI GPT-4 Vision via REST API"""
     try:
-        client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        api_key = os.getenv('OPENAI_API_KEY')
+        if not api_key:
+            raise Exception("OPENAI_API_KEY nicht gefunden")
         
-        response = client.chat.completions.create(
-            model="gpt-4o",  # Oder gpt-4o-mini für weniger Kosten
-            max_tokens=800,
-            messages=[
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        }
+        
+        payload = {
+            "model": "gpt-4o-mini",  # Günstigere Option, funktioniert auch gut
+            "max_tokens": 800,
+            "messages": [
                 {
                     "role": "user",
                     "content": [
@@ -77,20 +83,42 @@ def analyze_with_openai(image_base64):
                             "type": "image_url",
                             "image_url": {
                                 "url": f"data:image/jpeg;base64,{image_base64}",
-                                "detail": "high"  # Hohe Detailgenauigkeit
+                                "detail": "high"
                             }
                         }
                     ]
                 }
             ]
+        }
+        
+        print("Sende Request an OpenAI API...")
+        response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=60
         )
         
-        content = response.choices[0].message.content
-        tokens_used = response.usage.total_tokens
+        if response.status_code != 200:
+            raise Exception(f"API Fehler {response.status_code}: {response.text}")
+        
+        result = response.json()
+        
+        if "choices" not in result or not result["choices"]:
+            raise Exception(f"Keine Antwort in API Response: {result}")
+        
+        content = result["choices"][0]["message"]["content"]
+        tokens_used = result.get("usage", {}).get("total_tokens", 0)
         
         print(f"OpenAI Response erhalten: {tokens_used} Tokens verwendet")
         return content, tokens_used
         
+    except requests.exceptions.Timeout:
+        print("API Request Timeout")
+        return None, 0
+    except requests.exceptions.RequestException as e:
+        print(f"API Request Fehler: {e}")
+        return None, 0
     except Exception as e:
         print(f"OpenAI API Fehler: {e}")
         return None, 0
