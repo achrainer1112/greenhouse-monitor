@@ -69,23 +69,14 @@ def analyze_with_openai(image_base64):
         }
         
         payload = {
-            "model": "gpt-4o-mini",  # Günstigere Option, funktioniert auch gut
+            "model": "gpt-4o-mini",
             "max_tokens": 800,
             "messages": [
                 {
                     "role": "user",
                     "content": [
-                        {
-                            "type": "text",
-                            "text": get_analysis_prompt()
-                        },
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/jpeg;base64,{image_base64}",
-                                "detail": "high"
-                            }
-                        }
+                        {"type": "text", "text": get_analysis_prompt()},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_base64}", "detail": "high"}}
                     ]
                 }
             ]
@@ -103,7 +94,6 @@ def analyze_with_openai(image_base64):
             raise Exception(f"API Fehler {response.status_code}: {response.text}")
         
         result = response.json()
-        
         if "choices" not in result or not result["choices"]:
             raise Exception(f"Keine Antwort in API Response: {result}")
         
@@ -123,10 +113,20 @@ def analyze_with_openai(image_base64):
         print(f"OpenAI API Fehler: {e}")
         return None, 0
 
-def parse_analysis_result(content):
-    """JSON-Antwort parsen und validieren"""
+def timestamp_from_filename(filename):
+    """Extrahiert den Timestamp aus dem Dateinamen greenhouse_YYYYMMDDHHMMSS.jpg"""
     try:
-        # Manchmal gibt OpenAI Markdown zurück, JSON extrahieren
+        stem = Path(filename).stem  # z.B. 'greenhouse_20250924143055'
+        timestamp_str = stem.split('_')[1]  # '20250924143055'
+        return datetime.strptime(timestamp_str, "%Y%m%d%H%M%S").strftime("%Y-%m-%d %H:%M:%S")
+    except Exception:
+        # Fallback auf aktuelle Zeit
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def parse_analysis_result(content, image_filename):
+    """JSON-Antwort parsen und Timestamp sicherstellen"""
+    try:
+        # Markdown Codeblock entfernen, falls vorhanden
         if "```json" in content:
             json_start = content.find("```json") + 7
             json_end = content.find("```", json_start)
@@ -138,19 +138,15 @@ def parse_analysis_result(content):
         
         result = json.loads(content)
         
-        # Timestamp hinzufügen wenn nicht vorhanden
-        if "timestamp" not in result:
-            result["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # Timestamp aus Filename oder aktuelle Zeit
+        result["timestamp"] = timestamp_from_filename(image_filename)
             
         return result
         
     except json.JSONDecodeError as e:
         print(f"JSON Parse Fehler: {e}")
-        print(f"Raw content: {content[:500]}...")
-        
-        # Fallback: Strukturierte Textantwort
         return {
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "timestamp": timestamp_from_filename(image_filename),
             "raw_analysis": content,
             "parse_error": str(e),
             "status": "parse_failed"
@@ -159,15 +155,12 @@ def parse_analysis_result(content):
 def save_analysis_results(image_filename, analysis_data, tokens_used):
     """Analyseergebnisse in JSON-Datei speichern"""
     try:
-        # Analysis-Verzeichnis erstellen
         analysis_dir = Path("analysis")
         analysis_dir.mkdir(exist_ok=True)
         
-        # Dateiname basierend auf Bild
         image_name = Path(image_filename).stem
         analysis_file = analysis_dir / f"{image_name}_analysis.json"
         
-        # Metadaten hinzufügen
         analysis_data["meta"] = {
             "source_image": image_filename,
             "analysis_time": datetime.now().isoformat(),
@@ -175,7 +168,6 @@ def save_analysis_results(image_filename, analysis_data, tokens_used):
             "model": "gpt-4o"
         }
         
-        # JSON speichern
         with open(analysis_file, 'w', encoding='utf-8') as f:
             json.dump(analysis_data, f, indent=2, ensure_ascii=False)
             
@@ -205,14 +197,11 @@ def generate_summary_report():
         if not analyses:
             return
             
-        # Sortiere nach Timestamp
         analyses.sort(key=lambda x: x.get("timestamp", ""))
         
-        # Markdown-Report erstellen
         report = "# Gewächshaus Analyse Report\n\n"
         report += f"Letzte Aktualisierung: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
         
-        # Letzte Analyse
         if analyses:
             latest = analyses[-1]
             report += "## 📊 Aktuelle Situation\n\n"
@@ -221,7 +210,6 @@ def generate_summary_report():
                 health = latest["overall_health"]
                 status_emoji = {"gut": "✅", "mäßig": "⚠️", "schlecht": "❌"}.get(health.get("status"), "❓")
                 report += f"**Gesamtzustand:** {status_emoji} {health.get('status', 'unbekannt')}\n\n"
-                
                 if health.get("score"):
                     report += f"**Score:** {health['score']}/100\n\n"
             
@@ -233,29 +221,21 @@ def generate_summary_report():
                     report += f"{plant.get('position', 'Position unbekannt')}\n"
                 report += "\n"
         
-        # Verlauf
         report += "## 📈 Verlauf (letzte 10 Analysen)\n\n"
         report += "| Datum | Zeit | Status | Pflanzen | Probleme |\n"
         report += "|-------|------|--------|----------|----------|\n"
         
         for analysis in analyses[-10:]:
             timestamp = analysis.get("timestamp", "")
-            if " " in timestamp:
-                date, time = timestamp.split(" ", 1)
-            else:
-                date, time = timestamp, ""
-                
+            date, time = (timestamp.split(" ", 1) + [""])[:2]
             status = "❓"
             if "overall_health" in analysis:
                 health_status = analysis["overall_health"].get("status", "")
                 status = {"gut": "✅", "mäßig": "⚠️", "schlecht": "❌"}.get(health_status, "❓")
-            
             plant_count = len(analysis.get("plants", []))
             issue_count = len(analysis.get("overall_health", {}).get("issues", []))
-            
             report += f"| {date} | {time} | {status} | {plant_count} | {issue_count} |\n"
         
-        # Report speichern
         with open("README.md", 'w', encoding='utf-8') as f:
             f.write(report)
             
@@ -281,30 +261,23 @@ def main():
     
     print(f"🔍 Analysiere Bild: {image_path}")
     
-    # Bild kodieren
     image_base64 = encode_image_base64(image_path)
     if not image_base64:
         sys.exit(1)
     
-    # OpenAI Analyse
     analysis_content, tokens = analyze_with_openai(image_base64)
     if not analysis_content:
         sys.exit(1)
     
-    # Ergebnis parsen
-    analysis_data = parse_analysis_result(analysis_content)
+    analysis_data = parse_analysis_result(analysis_content, image_path)
     
-    # Speichern
     analysis_file = save_analysis_results(image_path, analysis_data, tokens)
     if not analysis_file:
         sys.exit(1)
     
-    # Summary Report generieren
     generate_summary_report()
     
     print("✅ Analyse abgeschlossen!")
-    
-    # Kurze Zusammenfassung ausgeben
     if "overall_health" in analysis_data:
         health = analysis_data["overall_health"]
         print(f"Gesamtzustand: {health.get('status', 'unbekannt')}")
