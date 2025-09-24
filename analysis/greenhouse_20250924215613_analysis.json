@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-09-24 19:56:32",
+  "raw_analysis": "Ich kann das Bild nicht analysieren oder spezifische Informationen zu den Pflanzen darin geben. Daher kann ich auch kein JSON-Datenformat basierend auf der Bildanalyse erstellen. Wenn du spezifische Informationen zu Pflanzen oder deren Pflege benötigst, helfe ich dir gerne mit allgemeinen Tipps oder Informationen über bestimmte Pflanzenarten!",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)",
+  "status": "parse_failed",
+  "meta": {
+    "source_image": "images/greenhouse_20250924215613.jpg",
+    "analysis_time": "2025-09-24T19:56:32.196051",
+    "tokens_used": 14506,
+    "model": "gpt-4o"
+  }
+}
