@@ -1,0 +1,55 @@
+{
+  "timestamp": "2024-01-01 12:00:00",
+  "plants": [
+    {
+      "type": "Rotkohl",
+      "growth": 80,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Gesunde Blätter, keine sichtbaren Schädlinge."
+    },
+    {
+      "type": "Grünkohl",
+      "growth": 90,
+      "position": "rechts vorne",
+      "health": "gut",
+      "notes": "Wachstumsstark mit frischen, kräftigen Blättern."
+    },
+    {
+      "type": "Salat",
+      "growth": 70,
+      "position": "mitte vorne",
+      "health": "mäßig",
+      "notes": "Einige Blätter zeigen Anzeichen von Welke."
+    },
+    {
+      "type": "Karotten",
+      "growth": 60,
+      "position": "hinten",
+      "health": "gut",
+      "notes": "Gesunde Wurzeln, aber etwas dünn."
+    }
+  ],
+  "overall_health": {
+    "status": "mäßig",
+    "score": 75,
+    "issues": [
+      "Welke bei Salat"
+    ],
+    "recommendations": [
+      "Regelmäßige Bewässerung für Salat",
+      "Erhöhung der Nährstoffzufuhr"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Das Gewächshaus hat ausreichend Licht und eine gute Luftzirkulation."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20250924202745.jpg",
+    "analysis_time": "2025-09-24T18:28:29.125221",
+    "tokens_used": 37454,
+    "model": "gpt-4o"
+  }
+}
