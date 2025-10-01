@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-10-01 12:32:51",
+  "plants": [
+    {
+      "type": "Salat",
+      "growth": 80,
+      "position": "rechts vorne",
+      "health": "gut",
+      "notes": "Die Pflanzen sind kräftig und zeigen gesunde Blätter."
+    },
+    {
+      "type": "Karotten",
+      "growth": 60,
+      "position": "mittig",
+      "health": "mäßig",
+      "notes": "Einige Pflanzen zeigen Anzeichen von Schädlingen."
+    },
+    {
+      "type": "Zwiebeln",
+      "growth": 70,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Gute Entwicklung, keine sichtbaren Probleme."
+    },
+    {
+      "type": "Lauch",
+      "growth": 50,
+      "position": "links hinten",
+      "health": "schlecht",
+      "notes": "Pflanzen wirken schwach und haben gelbe Blätter."
+    }
+  ],
+  "overall_health": {
+    "status": "mäßig",
+    "score": 70,
+    "issues": [
+      "Schädlinge bei den Karotten",
+      "schwache Lauch-Pflanzen"
+    ],
+    "recommendations": [
+      "Regelmäßige Kontrolle auf Schädlinge",
+      "Stärkung der Düngung für den Lauch"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen scheinen in einer sonnigen Umgebung zu wachsen."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20251001123251.jpg",
+    "analysis_time": "2025-10-01T10:33:22.797535",
+    "tokens_used": 14832,
+    "model": "gpt-4o"
+  }
+}
