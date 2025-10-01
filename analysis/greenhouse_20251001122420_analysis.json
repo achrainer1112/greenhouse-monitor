@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-10-01 12:24:20",
+  "plants": [
+    {
+      "type": "Kohl",
+      "growth": 80,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Gesunde Blätter, kräftiges Wachstum"
+    },
+    {
+      "type": "Grünkohl",
+      "growth": 85,
+      "position": "rechts neben Kohl",
+      "health": "gut",
+      "notes": "Dichte Blätter, keine sichtbaren Schäden"
+    },
+    {
+      "type": "Karotte",
+      "growth": 70,
+      "position": "rechts hinten",
+      "health": "mäßig",
+      "notes": "Einige Pflanzen zeigen Verfärbungen, verbessern der Erde empfohlen"
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 80,
+    "issues": [
+      "Verfärbungen bei Karotten"
+    ],
+    "recommendations": [
+      "Bodenverbesserung für Karotten",
+      "Regelmäßiges Gießen"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Gleichmäßige Belichtung, keine Anzeichen von Schattierung"
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20251001122420.jpg",
+    "analysis_time": "2025-10-01T10:24:45.405836",
+    "tokens_used": 37396,
+    "model": "gpt-4o"
+  }
+}
