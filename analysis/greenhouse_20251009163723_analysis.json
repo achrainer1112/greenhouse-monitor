@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-10-09 16:37:23",
+  "raw_analysis": "Es tut mir leid, aber ich kann die Pflanzen auf dem Foto nicht analysieren oder bewerten.",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)",
+  "status": "parse_failed",
+  "meta": {
+    "source_image": "images/greenhouse_20251009163723.jpg",
+    "analysis_time": "2025-10-09T15:08:52.584586",
+    "tokens_used": 25798,
+    "model": "gpt-4o"
+  }
+}
