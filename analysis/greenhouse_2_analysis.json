@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-10-11 12:40:50",
+  "plants": [
+    {
+      "type": "Zucchini",
+      "growth": 60,
+      "position": "zentral",
+      "health": "mäßig",
+      "notes": "Blätter zeigen Gelbfärbung, mögliches Nährstoffdefizit oder Bewässerungsproblem."
+    }
+  ],
+  "overall_health": {
+    "status": "mäßig",
+    "score": 65,
+    "issues": [
+      "Gelbe Blätter",
+      "Verzögerte Wachstumsentwicklung"
+    ],
+    "recommendations": [
+      "Düngen mit stickstoffhaltigem Dünger",
+      "Regelmäßige Bewässerung sicherstellen"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen scheinen genügend Licht zu erhalten, jedoch könnte die Erde in den Wurzelzonen die richtige Feuchtigkeit benötigen."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_2.jpg",
+    "analysis_time": "2025-10-11T12:40:50.163687",
+    "tokens_used": 37331,
+    "model": "gpt-4o"
+  }
+}
