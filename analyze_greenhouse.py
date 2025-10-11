@@ -81,17 +81,23 @@ def analyze_with_openai(image_base64):
         
         payload = {
             "model": "gpt-4o-mini",
-            "max_tokens": 800,
             "messages": [
                 {
                     "role": "user",
                     "content": [
                         {"type": "text", "text": get_analysis_prompt()},
-                        {"type": "image_url", "image_url": f"data:image/jpeg;base64,{image_base64}"}
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{image_base64}"
+                            }
+                        }
                     ]
                 }
-            ]
+            ],
+            "max_tokens": 1000
         }
+
         
         print("Sende Request an OpenAI API...")
         response = requests.post(
