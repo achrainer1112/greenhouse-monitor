@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-10-11 13:07:54",
+  "plants": [
+    {
+      "type": "Bohne",
+      "growth": 70,
+      "position": "rechts vorne",
+      "health": "gut",
+      "notes": "Starke, grüne Blätter, gesundes Wachstum."
+    },
+    {
+      "type": "Bohne",
+      "growth": 60,
+      "position": "mitte",
+      "health": "gut",
+      "notes": "Gute Blattentwicklung, leicht kleiner, aber gesund."
+    },
+    {
+      "type": "Bohne",
+      "growth": 50,
+      "position": "links vorne",
+      "health": "mäßig",
+      "notes": "Wachstum etwas langsamer, einige Blätter könnten abgestorben sein."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 80,
+    "issues": [
+      "Langsame Wachstumsrate bei der linken Pflanze",
+      "Mögliche Blattabsterbung"
+    ],
+    "recommendations": [
+      "Überprüfen der Bewässerung und Düngung",
+      "Eventuell abgestorbene Blätter entfernen"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Vermutlich genug Tageslicht. Temperatur scheint ideal für die Pflanzen."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_4.jpg",
+    "analysis_time": "2025-10-11T13:07:54.029900",
+    "tokens_used": 26085,
+    "model": "gpt-4o"
+  }
+}
