@@ -11,6 +11,17 @@ import base64
 from datetime import datetime
 from pathlib import Path
 import requests
+from PIL import Image
+from io import BytesIO
+
+
+def compress_image(image_path, max_size=(1280, 1280)):
+    img = Image.open(image_path)
+    img.thumbnail(max_size)
+    buffer = BytesIO()
+    img.save(buffer, format="JPEG", quality=85)
+    return base64.b64encode(buffer.getvalue()).decode("utf-8")
+
 
 def get_analysis_prompt():
     """Strukturierter Prompt für die Pflanzenanalyse"""
@@ -76,7 +87,7 @@ def analyze_with_openai(image_base64):
                     "role": "user",
                     "content": [
                         {"type": "text", "text": get_analysis_prompt()},
-                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_base64}", "detail": "high"}}
+                        {"type": "image_url", "image_url": f"data:image/jpeg;base64,{image_base64}"}
                     ]
                 }
             ]
@@ -261,7 +272,7 @@ def main():
     
     print(f"🔍 Analysiere Bild: {image_path}")
     
-    image_base64 = encode_image_base64(image_path)
+    image_base64 = compress_image(image_path)
     if not image_base64:
         sys.exit(1)
     
