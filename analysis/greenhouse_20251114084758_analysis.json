@@ -1,0 +1,56 @@
+{
+  "timestamp": "2025-11-14 08:47:58",
+  "plants": [
+    {
+      "type": "Blumenkohl",
+      "growth": 60,
+      "position": "rechts vorne",
+      "health": "mäßig",
+      "notes": "Blätter leicht schlaff, möglicherweise Wasserbedarf."
+    },
+    {
+      "type": "Salat (grün)",
+      "growth": 80,
+      "position": "mittig",
+      "health": "gut",
+      "notes": "Stabile Pflanzen, frisch und gesund."
+    },
+    {
+      "type": "Salat (rot)",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Gutes Wachstum, keine sichtbaren Schädlinge."
+    },
+    {
+      "type": "Karotte",
+      "growth": 50,
+      "position": "links hinten",
+      "health": "mäßig",
+      "notes": "Langsame Entwicklung, möglicherweise Platzmangel."
+    }
+  ],
+  "overall_health": {
+    "status": "mäßig",
+    "score": 70,
+    "issues": [
+      "Schlaffe Blätter bei Blumenkohl",
+      "Langsame Wachstumsrate der Karotten"
+    ],
+    "recommendations": [
+      "Überprüfung der Bewässerung",
+      "Boden auf Nährstoffe testen"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen scheinen ausreichend Licht zu erhalten, aber eventuell sollten sie häufiger gegossen werden."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20251114084758.jpg",
+    "analysis_time": "2025-11-14T07:48:21.436646",
+    "tokens_used": 37461,
+    "model": "gpt-4o"
+  }
+}
