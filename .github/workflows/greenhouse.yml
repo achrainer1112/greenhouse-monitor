@@ -1,52 +1,48 @@
-name: Greenhouse Analysis
-
+name: Gewaechshaus Analyse
 on:
   push:
     paths:
       - 'images/greenhouse_*.jpg'
-
 env:
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
 permissions:
   contents: write  # Erlaubt das Schreiben von Dateien
-
 jobs:
-  analyze-greenhouse:
+  gewaechshaus-analysieren:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
+    - name: Repository auschecken
       uses: actions/checkout@v4
       with:
         fetch-depth: 2
         
-    - name: Set up Python
+    - name: Python einrichten
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
         
-    - name: Install dependencies
+    - name: Abhängigkeiten installieren
       run: |
         pip install requests pillow
         
-    - name: Get changed files
-      id: changed-files
+    - name: Geänderte Dateien ermitteln
+      id: geaenderte-dateien
       run: |
-        NEW_IMAGE=$(git diff --name-only HEAD~1 HEAD | grep 'images/greenhouse_.*\.jpg' | head -1)
-        echo "new_image=$NEW_IMAGE" >> $GITHUB_OUTPUT
-        echo "Found new image: $NEW_IMAGE"
+        NEUES_BILD=$(git diff --name-only HEAD~1 HEAD | grep 'images/greenhouse_.*\.jpg' | head -1)
+        echo "neues_bild=$NEUES_BILD" >> $GITHUB_OUTPUT
+        echo "Neues Bild gefunden: $NEUES_BILD"
         
-    - name: Analyze image
-      if: steps.changed-files.outputs.new_image != ''
+    - name: Bild analysieren
+      if: steps.geaenderte-dateien.outputs.neues_bild != ''
       run: |
-        python analyze_greenhouse.py "${{ steps.changed-files.outputs.new_image }}"
+        python analyze_greenhouse.py "${{ steps.geaenderte-dateien.outputs.neues_bild }}"
         
-    - name: Commit analysis results
-      if: steps.changed-files.outputs.new_image != ''
+    - name: Analyseergebnisse committen
+      if: steps.geaenderte-dateien.outputs.neues_bild != ''
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add analysis/
-        git commit -m "Analysis results for ${{ steps.changed-files.outputs.new_image }}" || exit 0
+        git commit -m "Analyseergebnisse für ${{ steps.geaenderte-dateien.outputs.neues_bild }}" || exit 0
         git push
