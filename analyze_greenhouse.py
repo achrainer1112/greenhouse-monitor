@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
 """
 Greenhouse Image Analyzer
 Analysiert Gewächshaus-Bilder mit OpenAI GPT-4 Vision
+und gibt Wachstums- und Gesundheitszustand als Json zurück.
 """
+
 
 import os
 import sys
@@ -15,16 +16,15 @@ from PIL import Image
 from io import BytesIO
 
 
-def compress_image(image_path, max_size=(1280, 1280)):
-    img = Image.open(image_path)
-    img.thumbnail(max_size)
-    buffer = BytesIO()
-    img.save(buffer, format="JPEG", quality=85)
-    return base64.b64encode(buffer.getvalue()).decode("utf-8")
+def bild_komprimieren(bildpfad, max_groesse=(1280, 1280)):
+    bild = Image.open(bildpfad)
+    bild.thumbnail(max_groesse)
+    puffer = BytesIO()
+    bild.save(puffer, format="JPEG", quality=85)
+    return base64.b64encode(puffer.getvalue()).decode("utf-8")
 
 
-def get_analysis_prompt():
-    """Strukturierter Prompt für die Pflanzenanalyse"""
+def hole_analyse_prompt():
     return """Analysiere alle Pflanzen die du auf diesem Gewächshaus-Foto siehst detailliert:
 
 1. PFLANZEN: Erkenne und bewerte jede Pflanze (Typ, Wachstumsstadium 0-100%, Position)
@@ -56,40 +56,40 @@ Antwort als JSON:
   }
 }"""
 
-def encode_image_base64(image_path):
+def kodiere_bild_base64(bildpfad):
     """Bild als Base64 kodieren"""
     try:
-        with open(image_path, 'rb') as image_file:
-            encoded = base64.b64encode(image_file.read()).decode('utf-8')
-            print(f"Bild kodiert: {len(encoded)} Zeichen")
-            return encoded
-    except Exception as e:
-        print(f"Fehler beim Kodieren des Bildes: {e}")
+        with open(bildpfad, 'rb') as bilddatei:
+            kodiert = base64.b64encode(bilddatei.read()).decode('utf-8')
+            print(f"Bild kodiert: {len(kodiert)} Zeichen")
+            return kodiert
+    except Exception as fehler:
+        print(f"Fehler beim Kodieren des Bildes: {fehler}")
         return None
 
-def analyze_with_openai(image_base64):
-    """Bildanalyse mit OpenAI GPT-4 Vision via REST API"""
+def analysiere_mit_openai(bild_base64):
+    """Bildanalyse mit OpenAI GPT-4 Vision mit REST API"""
     try:
-        api_key = os.getenv('OPENAI_API_KEY')
-        if not api_key:
+        api_schluessel = os.getenv('OPENAI_API_KEY')
+        if not api_schluessel:
             raise Exception("OPENAI_API_KEY nicht gefunden")
         
-        headers = {
+        kopfzeilen = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
+            "Authorization": f"Bearer {api_schluessel}"
         }
         
-        payload = {
+        nutzlast = {
             "model": "gpt-4o-mini",
             "messages": [
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": get_analysis_prompt()},
+                        {"type": "text", "text": hole_analyse_prompt()},
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": f"data:image/jpeg;base64,{image_base64}"
+                                "url": f"data:image/jpeg;base64,{bild_base64}"
                             }
                         }
                     ]
@@ -100,206 +100,135 @@ def analyze_with_openai(image_base64):
 
         
         print("Sende Request an OpenAI API...")
-        response = requests.post(
+        antwort = requests.post(
             "https://api.openai.com/v1/chat/completions",
-            headers=headers,
-            json=payload,
+            headers=kopfzeilen,
+            json=nutzlast,
             timeout=60
         )
         
-        if response.status_code != 200:
-            raise Exception(f"API Fehler {response.status_code}: {response.text}")
+        if antwort.status_code != 200:
+            raise Exception(f"API Fehler {antwort.status_code}: {antwort.text}")
         
-        result = response.json()
-        if "choices" not in result or not result["choices"]:
-            raise Exception(f"Keine Antwort in API Response: {result}")
+        ergebnis = antwort.json()
+        if "choices" not in ergebnis or not ergebnis["choices"]:
+            raise Exception(f"Keine Antwort in API Response: {ergebnis}")
         
-        content = result["choices"][0]["message"]["content"]
-        tokens_used = result.get("usage", {}).get("total_tokens", 0)
+        inhalt = ergebnis["choices"][0]["message"]["content"]
+        tokens_verbraucht = ergebnis.get("usage", {}).get("total_tokens", 0)
         
-        print(f"OpenAI Response erhalten: {tokens_used} Tokens verwendet")
-        return content, tokens_used
+        print(f"OpenAI Response erhalten: {tokens_verbraucht} Tokens verwendet")
+        return inhalt, tokens_verbraucht
         
     except requests.exceptions.Timeout:
         print("API Request Timeout")
         return None, 0
-    except requests.exceptions.RequestException as e:
-        print(f"API Request Fehler: {e}")
+    except requests.exceptions.RequestException as fehler:
+        print(f"API Request Fehler: {fehler}")
         return None, 0
-    except Exception as e:
-        print(f"OpenAI API Fehler: {e}")
+    except Exception as fehler:
+        print(f"OpenAI API Fehler: {fehler}")
         return None, 0
 
-def timestamp_from_filename(filename):
+def zeitstempel_aus_dateiname(dateiname):
     """Extrahiert den Timestamp aus dem Dateinamen greenhouse_YYYYMMDDHHMMSS.jpg"""
     try:
-        stem = Path(filename).stem  # z.B. 'greenhouse_20250924143055'
-        timestamp_str = stem.split('_')[1]  # '20250924143055'
-        return datetime.strptime(timestamp_str, "%Y%m%d%H%M%S").strftime("%Y-%m-%d %H:%M:%S")
+        stamm = Path(dateiname).stem  # z.B. 'greenhouse_20250924143055'
+        zeitstempel_text = stamm.split('_')[1]  # '20250924143055'
+        return datetime.strptime(zeitstempel_text, "%Y%m%d%H%M%S").strftime("%Y-%m-%d %H:%M:%S")
     except Exception:
         # Fallback auf aktuelle Zeit
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-def parse_analysis_result(content, image_filename):
+def parse_analyse_ergebnis(inhalt, bild_dateiname):
     """JSON-Antwort parsen und Timestamp sicherstellen"""
     try:
         # Markdown Codeblock entfernen, falls vorhanden
-        if "```json" in content:
-            json_start = content.find("```json") + 7
-            json_end = content.find("```", json_start)
-            content = content[json_start:json_end].strip()
-        elif "```" in content:
-            json_start = content.find("```") + 3
-            json_end = content.find("```", json_start)
-            content = content[json_start:json_end].strip()
+        if "```json" in inhalt:
+            json_start = inhalt.find("```json") + 7
+            json_ende = inhalt.find("```", json_start)
+            inhalt = inhalt[json_start:json_ende].strip()
+        elif "```" in inhalt:
+            json_start = inhalt.find("```") + 3
+            json_ende = inhalt.find("```", json_start)
+            inhalt = inhalt[json_start:json_ende].strip()
         
-        result = json.loads(content)
+        ergebnis = json.loads(inhalt)
         
         # Timestamp aus Filename oder aktuelle Zeit
-        result["timestamp"] = timestamp_from_filename(image_filename)
+        ergebnis["timestamp"] = zeitstempel_aus_dateiname(bild_dateiname)
             
-        return result
+        return ergebnis
         
-    except json.JSONDecodeError as e:
-        print(f"JSON Parse Fehler: {e}")
+    except json.JSONDecodeError as fehler:
+        print(f"JSON Parse Fehler: {fehler}")
         return {
-            "timestamp": timestamp_from_filename(image_filename),
-            "raw_analysis": content,
-            "parse_error": str(e),
+            "timestamp": zeitstempel_aus_dateiname(bild_dateiname),
+            "raw_analysis": inhalt,
+            "parse_error": str(fehler),
             "status": "parse_failed"
         }
 
-def save_analysis_results(image_filename, analysis_data, tokens_used):
+def speichere_analyse_ergebnisse(bild_dateiname, analyse_daten, tokens_verbraucht):
     """Analyseergebnisse in JSON-Datei speichern"""
     try:
-        analysis_dir = Path("analysis")
-        analysis_dir.mkdir(exist_ok=True)
+        analyse_ordner = Path("analysis")
+        analyse_ordner.mkdir(exist_ok=True)
         
-        image_name = Path(image_filename).stem
-        analysis_file = analysis_dir / f"{image_name}_analysis.json"
+        bildname = Path(bild_dateiname).stem
+        analyse_datei = analyse_ordner / f"{bildname}_analysis.json"
         
-        analysis_data["meta"] = {
-            "source_image": image_filename,
+        analyse_daten["meta"] = {
+            "source_image": bild_dateiname,
             "analysis_time": datetime.now().isoformat(),
-            "tokens_used": tokens_used,
+            "tokens_used": tokens_verbraucht,
             "model": "gpt-4o"
         }
         
-        with open(analysis_file, 'w', encoding='utf-8') as f:
-            json.dump(analysis_data, f, indent=2, ensure_ascii=False)
+        with open(analyse_datei, 'w', encoding='utf-8') as datei:
+            json.dump(analyse_daten, datei, indent=2, ensure_ascii=False)
             
-        print(f"Analyse gespeichert: {analysis_file}")
-        return analysis_file
+        print(f"Analyse gespeichert: {analyse_datei}")
+        return analyse_datei
         
-    except Exception as e:
-        print(f"Fehler beim Speichern: {e}")
+    except Exception as fehler:
+        print(f"Fehler beim Speichern: {fehler}")
         return None
 
-def generate_summary_report():
-    """Zusammenfassungsbericht aller Analysen erstellen"""
-    try:
-        analysis_dir = Path("analysis")
-        if not analysis_dir.exists():
-            return
-            
-        analyses = []
-        for analysis_file in analysis_dir.glob("*_analysis.json"):
-            try:
-                with open(analysis_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    analyses.append(data)
-            except Exception as e:
-                print(f"Fehler beim Laden von {analysis_file}: {e}")
-        
-        if not analyses:
-            return
-            
-        analyses.sort(key=lambda x: x.get("timestamp", ""))
-        
-        report = "# Gewächshaus Analyse Report\n\n"
-        report += f"Letzte Aktualisierung: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-        
-        if analyses:
-            latest = analyses[-1]
-            report += "## 📊 Aktuelle Situation\n\n"
-            
-            if "overall_health" in latest:
-                health = latest["overall_health"]
-                status_emoji = {"gut": "✅", "mäßig": "⚠️", "schlecht": "❌"}.get(health.get("status"), "❓")
-                report += f"**Gesamtzustand:** {status_emoji} {health.get('status', 'unbekannt')}\n\n"
-                if health.get("score"):
-                    report += f"**Score:** {health['score']}/100\n\n"
-            
-            if "plants" in latest and latest["plants"]:
-                report += "### 🌱 Erkannte Pflanzen\n\n"
-                for plant in latest["plants"]:
-                    report += f"- **{plant.get('type', 'Unbekannt')}** "
-                    report += f"({plant.get('growth', 0)}% Wachstum) - "
-                    report += f"{plant.get('position', 'Position unbekannt')}\n"
-                report += "\n"
-        
-        report += "## 📈 Verlauf (letzte 10 Analysen)\n\n"
-        report += "| Datum | Zeit | Status | Pflanzen | Probleme |\n"
-        report += "|-------|------|--------|----------|----------|\n"
-        
-        for analysis in analyses[-10:]:
-            timestamp = analysis.get("timestamp", "")
-            date, time = (timestamp.split(" ", 1) + [""])[:2]
-            status = "❓"
-            if "overall_health" in analysis:
-                health_status = analysis["overall_health"].get("status", "")
-                status = {"gut": "✅", "mäßig": "⚠️", "schlecht": "❌"}.get(health_status, "❓")
-            plant_count = len(analysis.get("plants", []))
-            issue_count = len(analysis.get("overall_health", {}).get("issues", []))
-            report += f"| {date} | {time} | {status} | {plant_count} | {issue_count} |\n"
-        
-        with open("README.md", 'w', encoding='utf-8') as f:
-            f.write(report)
-            
-        print("📊 Summary Report aktualisiert: README.md")
-        
-    except Exception as e:
-        print(f"Fehler beim Erstellen des Reports: {e}")
 
 def main():
     if len(sys.argv) != 2:
         print("Usage: python analyze_greenhouse.py <image_path>")
         sys.exit(1)
         
-    image_path = sys.argv[1]
+    bildpfad = sys.argv[1]
     
-    if not os.path.exists(image_path):
-        print(f"Bild nicht gefunden: {image_path}")
+    if not os.path.exists(bildpfad):
+        print(f"Bild nicht gefunden: {bildpfad}")
         sys.exit(1)
         
     if not os.getenv('OPENAI_API_KEY'):
         print("OPENAI_API_KEY environment variable not set")
         sys.exit(1)
     
-    print(f"🔍 Analysiere Bild: {image_path}")
+    print(f"Analysiere Bild: {bildpfad}")
     
-    image_base64 = compress_image(image_path)
-    if not image_base64:
+    bild_base64 = bild_komprimieren(bildpfad)
+    if not bild_base64:
         sys.exit(1)
     
-    analysis_content, tokens = analyze_with_openai(image_base64)
-    if not analysis_content:
+    analyse_inhalt, tokens = analysiere_mit_openai(bild_base64)
+    if not analyse_inhalt:
         sys.exit(1)
     
-    analysis_data = parse_analysis_result(analysis_content, image_path)
+    analyse_daten = parse_analyse_ergebnis(analyse_inhalt, bildpfad)
     
-    analysis_file = save_analysis_results(image_path, analysis_data, tokens)
-    if not analysis_file:
+    analyse_datei = speichere_analyse_ergebnisse(bildpfad, analyse_daten, tokens)
+    if not analyse_datei:
         sys.exit(1)
     
-    generate_summary_report()
+    print("Analyse abgeschlossen!")
     
-    print("✅ Analyse abgeschlossen!")
-    if "overall_health" in analysis_data:
-        health = analysis_data["overall_health"]
-        print(f"Gesamtzustand: {health.get('status', 'unbekannt')}")
-        if health.get("issues"):
-            print(f"Probleme: {', '.join(health['issues'])}")
 
 if __name__ == "__main__":
     main()
