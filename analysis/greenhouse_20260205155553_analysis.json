@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 15:55:53",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Die Pflanze zeigt gesunde Blätter und Fruchtentwicklung mit reifen und unreifen Tomaten."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßig gießen",
+      "Auf Schädlinge achten"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Das Gewächshaus bietet genügend Licht und eine stabile Temperatur."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205155553.jpg",
+    "analysis_time": "2026-02-05T14:56:12.746759",
+    "tokens_used": 37291,
+    "model": "gpt-4o"
+  }
+}
