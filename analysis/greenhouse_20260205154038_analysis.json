@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 15:40:38",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Die Pflanze zeigt gesunde Blätter und Früchte in verschiedenen Reifestadien. Einige grüne und reifende Tomaten vorhanden."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßige Düngung",
+      "Achten auf Wasserbedarf"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Das Gewächshaus bietet eine helle Umgebung, ideal für das Wachstum von Tomaten."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205154038.jpg",
+    "analysis_time": "2026-02-05T14:41:03.760497",
+    "tokens_used": 37305,
+    "model": "gpt-4o"
+  }
+}
