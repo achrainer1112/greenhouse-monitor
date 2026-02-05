@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 16:05:30",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Die Pflanzen tragen viele reife und unreife Früchte."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßig gießen",
+      "Auf Schädlinge achten"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen befinden sich in einem Gewächshaus mit gutem Licht und einer stabilen Temperatur."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205160530.jpg",
+    "analysis_time": "2026-02-05T15:05:51.599398",
+    "tokens_used": 25955,
+    "model": "gpt-4o"
+  }
+}
