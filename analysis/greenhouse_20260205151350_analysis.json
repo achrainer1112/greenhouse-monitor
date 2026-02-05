@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 15:13:50",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Die Pflanze hat einige reife und unreife Früchte. Die Blätter sind grün und gesund."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßiges Gießen",
+      "Düngen alle 4-6 Wochen"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Das Gewächshaus hat ausreichend Licht und die Temperatur scheint angemessen."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205151350.jpg",
+    "analysis_time": "2026-02-05T14:14:10.727974",
+    "tokens_used": 37297,
+    "model": "gpt-4o"
+  }
+}
