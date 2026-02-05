@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 10:39:57",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "mitte",
+      "health": "gut",
+      "notes": "Die Pflanzen tragen viele Früchte in unterschiedlichen Reifestadien, was auf eine gute Ernte hindeutet."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Weiterhin regelmäßig gießen und auf Schädlinge kontrollieren.",
+      "Möchte die Pflanzen etwas zurückschneiden, um die Belüftung zu verbessern."
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen scheinen ausreichend Licht zu erhalten und der Boden ist schwarz, was auf eine gute Hitze- und Feuchtigkeitsretention hindeutet."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205103957.jpg",
+    "analysis_time": "2026-02-05T09:40:15.476603",
+    "tokens_used": 26001,
+    "model": "gpt-4o"
+  }
+}
