@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-02-05 10:48:43",
+  "raw_analysis": "I'm unable to analyze or detail plants based on the photo provided, as I cannot view or interpret images. If you can describe the plants in detail, I can help you formulate an analysis based on that description.",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)",
+  "status": "parse_failed",
+  "meta": {
+    "source_image": "images/greenhouse_20260205104843.jpg",
+    "analysis_time": "2026-02-05T09:49:01.384205",
+    "tokens_used": 8819,
+    "model": "gpt-4o"
+  }
+}
