@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 10:52:19",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 85,
+      "position": "zentral",
+      "health": "gut",
+      "notes": "Die Pflanzen sind gut gewachsen und tragen viele Früchte in verschiedenen Reifestadien."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 90,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßige Düngung mit Flüssigdünger",
+      "Sorgfältige Kontrolle der Blätter auf Schädlinge"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen scheinen ausreichend Licht zu erhalten und sind gut bewässert, der Boden ist feucht, aber nicht nass."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205105219.jpg",
+    "analysis_time": "2026-02-05T09:52:41.251545",
+    "tokens_used": 25979,
+    "model": "gpt-4o"
+  }
+}
