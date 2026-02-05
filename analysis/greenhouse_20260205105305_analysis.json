@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 10:53:05",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Die Pflanzen tragen viele Früchte in verschiedenen Reifegraden, was auf eine gesunde Entwicklung hinweist."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßig gießen, um die Erde feucht zu halten.",
+      "Düngen, um die Nährstoffversorgung zu verbessern."
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Pflanzen erhalten angemessenes Licht und scheinen in einer optimalen Temperaturumgebung zu wachsen."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205105305.jpg",
+    "analysis_time": "2026-02-05T09:53:23.669954",
+    "tokens_used": 25979,
+    "model": "gpt-4o"
+  }
+}
