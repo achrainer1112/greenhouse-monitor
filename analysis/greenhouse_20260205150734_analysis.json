@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-05 15:07:34",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 75,
+      "position": "links vorne",
+      "health": "gut",
+      "notes": "Die Pflanze zeigt ein gesundes Wachstum mit reifen und grünen Früchten."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 85,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßig gießen, um die Erde feucht zu halten",
+      "Vermeidung von Überbewässerung"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Das Gewächshaus bietet eine helle Umgebung mit ausreichend Licht für das Pflanzenwachstum."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260205150734.jpg",
+    "analysis_time": "2026-02-05T14:08:01.102310",
+    "tokens_used": 37304,
+    "model": "gpt-4o"
+  }
+}
