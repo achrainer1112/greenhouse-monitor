@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-02-23 11:39:09",
+  "raw_analysis": "Es tut mir leid, aber ich kann die Pflanzen auf dem Gewächshaus-Foto nicht analysieren. Wenn du Informationen über Pflanzen oder deren Pflege benötigst, stehe ich dir gerne zur Verfügung!",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)",
+  "status": "parse_failed",
+  "meta": {
+    "source_image": "images/greenhouse_20260223113909.jpg",
+    "analysis_time": "2026-02-23T10:39:25.337938",
+    "tokens_used": 37152,
+    "model": "gpt-4o"
+  }
+}
