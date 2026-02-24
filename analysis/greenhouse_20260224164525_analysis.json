@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-24 16:45:25",
+  "plants": [
+    {
+      "type": "Tomate",
+      "growth": 85,
+      "position": "zentral",
+      "health": "gut",
+      "notes": "Die Pflanzen haben eine hohe Fruchtlast, reife und unbeschädigte Früchte."
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 90,
+    "issues": [],
+    "recommendations": [
+      "Regelmäßig düngen für optimale Nährstoffversorgung",
+      "Auf Schädlinge achten"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Umgebung scheint ideal für das Wachstum der Tomaten zu sein, mit ausreichendem Licht und Bewässerung."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260224164525.jpg",
+    "analysis_time": "2026-02-24T15:45:51.008872",
+    "tokens_used": 37304,
+    "model": "gpt-4o"
+  }
+}
