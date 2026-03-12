@@ -7,7 +7,6 @@ und gibt Wachstums- und Gesundheitszustand als Json zurück.
 import os
 import sys
 import json
-import base64
 from datetime import datetime
 from pathlib import Path
 import requests
@@ -46,20 +45,8 @@ Antwort als JSON:
 }"""
 
 
-def bild_als_base64(bildpfad):
-    """Bild direkt als Base64 kodieren ohne Komprimierung oder Skalierung"""
-    try:
-        with open(bildpfad, 'rb') as bilddatei:
-            kodiert = base64.b64encode(bilddatei.read()).decode('utf-8')
-            print(f"Bild kodiert: {len(kodiert)} Zeichen")
-            return kodiert
-    except Exception as fehler:
-        print(f"Fehler beim Kodieren des Bildes: {fehler}")
-        return None
-
-
-def analysiere_mit_openai(bild_base64):
-    """Bildanalyse mit OpenAI GPT-4 Vision mit REST API"""
+def analysiere_mit_openai(bild_url):
+    """Bildanalyse mit OpenAI GPT-4 Vision via öffentlicher Bild-URL"""
     try:
         api_schluessel = os.getenv('OPENAI_API_KEY')
         if not api_schluessel:
@@ -80,7 +67,7 @@ def analysiere_mit_openai(bild_base64):
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": f"data:image/jpeg;base64,{bild_base64}"
+                                "url": bild_url
                             }
                         }
                     ]
@@ -124,14 +111,14 @@ def analysiere_mit_openai(bild_base64):
 def zeitstempel_aus_dateiname(dateiname):
     """Extrahiert den Timestamp aus dem Dateinamen greenhouse_YYYYMMDDHHMMSS.jpg"""
     try:
-        stamm = Path(dateiname).stem  # z.B. 'greenhouse_20250924143055'
-        zeitstempel_text = stamm.split('_')[1]  # '20250924143055'
+        stamm = Path(dateiname).stem
+        zeitstempel_text = stamm.split('_')[1]
         return datetime.strptime(zeitstempel_text, "%Y%m%d%H%M%S").strftime("%Y-%m-%d %H:%M:%S")
     except Exception:
         return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def parse_analyse_ergebnis(inhalt, bild_dateiname):
+def parse_analyse_ergebnis(inhalt, bild_url):
     """JSON-Antwort parsen und Timestamp sicherstellen"""
     try:
         if "```json" in inhalt:
@@ -144,33 +131,34 @@ def parse_analyse_ergebnis(inhalt, bild_dateiname):
             inhalt = inhalt[json_start:json_ende].strip()
 
         ergebnis = json.loads(inhalt)
-        ergebnis["timestamp"] = zeitstempel_aus_dateiname(bild_dateiname)
+        ergebnis["timestamp"] = zeitstempel_aus_dateiname(bild_url)
         return ergebnis
 
     except json.JSONDecodeError as fehler:
         print(f"JSON Parse Fehler: {fehler}")
         return {
-            "timestamp": zeitstempel_aus_dateiname(bild_dateiname),
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "raw_analysis": inhalt,
             "parse_error": str(fehler),
             "status": "parse_failed"
         }
 
 
-def speichere_analyse_ergebnisse(bild_dateiname, analyse_daten, tokens_verbraucht):
+def speichere_analyse_ergebnisse(bild_url, analyse_daten, tokens_verbraucht):
     """Analyseergebnisse in JSON-Datei speichern"""
     try:
         analyse_ordner = Path("analysis")
         analyse_ordner.mkdir(exist_ok=True)
 
-        bildname = Path(bild_dateiname).stem
+        # Dateiname aus URL ableiten
+        bildname = Path(bild_url.split("/")[-1]).stem
         analyse_datei = analyse_ordner / f"{bildname}_analysis.json"
 
         analyse_daten["meta"] = {
-            "source_image": bild_dateiname,
+            "source_image": bild_url,
             "analysis_time": datetime.now().isoformat(),
             "tokens_used": tokens_verbraucht,
-            "model": "gpt-4o"
+            "model": "gpt-4o-mini"
         }
 
         with open(analyse_datei, 'w', encoding='utf-8') as datei:
@@ -186,32 +174,28 @@ def speichere_analyse_ergebnisse(bild_dateiname, analyse_daten, tokens_verbrauch
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python analyze_greenhouse.py <image_path>")
+        print("Usage: python analyze_greenhouse.py <image_url>")
         sys.exit(1)
 
-    bildpfad = sys.argv[1]
+    bild_url = sys.argv[1]
 
-    if not os.path.exists(bildpfad):
-        print(f"Bild nicht gefunden: {bildpfad}")
+    if not bild_url.startswith("http://") and not bild_url.startswith("https://"):
+        print("Fehler: Es muss eine öffentliche HTTP/HTTPS-URL angegeben werden")
         sys.exit(1)
 
     if not os.getenv('OPENAI_API_KEY'):
         print("OPENAI_API_KEY environment variable not set")
         sys.exit(1)
 
-    print(f"Analysiere Bild: {bildpfad}")
+    print(f"Analysiere Bild: {bild_url}")
 
-    bild_base64 = bild_als_base64(bildpfad)
-    if not bild_base64:
-        sys.exit(1)
-
-    analyse_inhalt, tokens = analysiere_mit_openai(bild_base64)
+    analyse_inhalt, tokens = analysiere_mit_openai(bild_url)
     if not analyse_inhalt:
         sys.exit(1)
 
-    analyse_daten = parse_analyse_ergebnis(analyse_inhalt, bildpfad)
+    analyse_daten = parse_analyse_ergebnis(analyse_inhalt, bild_url)
 
-    analyse_datei = speichere_analyse_ergebnisse(bildpfad, analyse_daten, tokens)
+    analyse_datei = speichere_analyse_ergebnisse(bild_url, analyse_daten, tokens)
     if not analyse_datei:
         sys.exit(1)
 
