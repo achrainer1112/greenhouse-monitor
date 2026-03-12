@@ -2,55 +2,47 @@
   "timestamp": "2026-02-24 16:51:29",
   "plants": [
     {
-      "type": "Avocado",
-      "growth": 60,
-      "position": "mittel vorne (im Glas mit Wurzeln)",
-      "health": "gut",
-      "notes": "Die Pflanze weist gesunde, grüne Blätter auf, zeigt aber etwas langsames Wachstum."
-    },
-    {
-      "type": "Palme",
+      "type": "Kürbis",
       "growth": 80,
       "position": "links vorne",
       "health": "gut",
-      "notes": "Die Blätter sind grün und kräftig, die Pflanze scheint gut zu gedeihen."
+      "notes": "Starke Blätter, keine sichtbaren Schädlinge."
     },
     {
-      "type": "Kaktus",
+      "type": "Salat",
+      "growth": 60,
+      "position": "Mitte",
+      "health": "mäßig",
+      "notes": "Einige Blätter sind gelb, möglicherweise Überwässerung."
+    },
+    {
+      "type": "Zucchini",
       "growth": 90,
-      "position": "rechts vorne",
-      "health": "gut",
-      "notes": "Stabil und gesund, zeigt keine Anzeichen von Schädlingen oder Krankheiten."
-    },
-    {
-      "type": "Zierpflanze",
-      "growth": 70,
       "position": "rechts hinten",
-      "health": "mäßíg",
-      "notes": "Einige Blätter zeigen Anzeichen von Verfärbung, möglicherweise Wasserstress."
+      "health": "gut",
+      "notes": "Gute Fruchtbildung sichtbar."
     }
   ],
   "overall_health": {
     "status": "mäßig",
     "score": 75,
     "issues": [
-      "Verfärbung an Zierpflanze",
-      "langsames Wachstum bei Avocado"
+      "gelbe Salatblätter"
     ],
     "recommendations": [
-      "Überprüfen der Bewässerungsgewohnheiten",
-      "Düngung der Zierpflanze"
+      "Weniger gießen",
+      "Einsatz von organischem Dünger"
     ]
   },
   "environment": {
     "watering": "ausreichend",
     "light": "gut",
-    "notes": "Viel natürliches Licht, die Temperaturen scheinen angemessen zu sein."
+    "notes": "Temperaturen scheinen stabil und warm zu sein."
   },
   "meta": {
     "source_image": "images/greenhouse_20260224165129.jpg",
-    "analysis_time": "2026-02-24T15:52:08.500553",
-    "tokens_used": 26163,
+    "analysis_time": "2026-03-12T08:19:12.132257",
+    "tokens_used": 37495,
     "model": "gpt-4o"
   }
 }
