@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-12 07:59:24",
+  "plants": [
+    {
+      "type": "Petersilie",
+      "growth": 90,
+      "position": "links hinten",
+      "health": "gut",
+      "notes": "Starke Blätter, robustes Wachstum"
+    },
+    {
+      "type": "Thymian",
+      "growth": 80,
+      "position": "rechts hinten",
+      "health": "gut",
+      "notes": "Gesunde Grüne, leicht verholzt"
+    },
+    {
+      "type": "Rosmarin",
+      "growth": 70,
+      "position": "rechts vorne",
+      "health": "mäßig",
+      "notes": "Einige braune Blätter, möglicherweise zu wenig Licht"
+    },
+    {
+      "type": "Oregano",
+      "growth": 85,
+      "position": "mittel",
+      "health": "gut",
+      "notes": "Dichtes Wachstum, gesund aussehend"
+    }
+  ],
+  "overall_health": {
+    "status": "gut",
+    "score": 80,
+    "issues": [
+      "Einige braune Blätter beim Rosmarin"
+    ],
+    "recommendations": [
+      "Überprüfung der Lichtverhältnisse für Rosmarin",
+      "Regelmäßige Ernte der Kräuter"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Kräuter scheinen ausreichend Licht zu bekommen, Temperatur scheint moderat"
+  },
+  "meta": {
+    "source_image": "images/greenhouse_4.jpg",
+    "analysis_time": "2026-03-12T07:59:24.431504",
+    "tokens_used": 37460,
+    "model": "gpt-4o"
+  }
+}
