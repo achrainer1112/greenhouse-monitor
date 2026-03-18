@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-18 22:02:13",
+  "plants": [
+    {
+      "type": "Sukkulente",
+      "growth": 80,
+      "position": "hinten links",
+      "health": "gut",
+      "notes": "Die Pflanze zeigt gesunde, kräftige Blätter und ist gut gewachsen."
+    },
+    {
+      "type": "Aloe Vera",
+      "growth": 90,
+      "position": "hinten",
+      "health": "gut",
+      "notes": "Starke, grüne Blätter; gut geeignet für sonnige Standorte."
+    },
+    {
+      "type": "Ficus",
+      "growth": 60,
+      "position": "rechts vorne",
+      "health": "mäßig",
+      "notes": "Blätter zeigen Anzeichen von Gelbfärbung; könnte auf Überwässerung hindeuten."
+    },
+    {
+      "type": "Kräuter (Basilikum)",
+      "growth": 70,
+      "position": "rechts",
+      "health": "gut",
+      "notes": "Kräftige Wuchsform, regelmäßig geerntet, frisches Wachstum erkennbar."
+    }
+  ],
+  "overall_health": {
+    "status": "mäßig",
+    "score": 75,
+    "issues": [
+      "Gelbfärbung der Ficus-Blätter"
+    ],
+    "recommendations": [
+      "Überwässerung reduzieren",
+      "Luftzirkulation verbessern"
+    ]
+  },
+  "environment": {
+    "watering": "ausreichend",
+    "light": "gut",
+    "notes": "Die Lichtverhältnisse scheinen stabil, die Pflanzen erhalten genug Sonnenlicht."
+  },
+  "meta": {
+    "source_image": "images/greenhouse_20260318220213.jpg",
+    "analysis_time": "2026-03-18T21:02:41.521767",
+    "tokens_used": 14810,
+    "model": "gpt-4o"
+  }
+}
