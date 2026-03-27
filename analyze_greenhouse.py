@@ -115,6 +115,9 @@ def analysiere_mit_openai(bild_base64):
             raise Exception(f"Keine Antwort in API Response: {ergebnis}")
         
         inhalt = ergebnis["choices"][0]["message"]["content"]
+        print(f"=== API ANTWORT ===")
+        print(repr(inhalt))  # repr() zeigt auch None, \n, etc.
+        print(f"==================")
         tokens_verbraucht = ergebnis.get("usage", {}).get("total_tokens", 0)
         
         print(f"OpenAI Response erhalten: {tokens_verbraucht} Tokens verwendet")
