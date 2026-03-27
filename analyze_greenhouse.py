@@ -20,7 +20,7 @@ def bild_komprimieren(bildpfad, max_groesse=(1280, 1280)):
     bild = Image.open(bildpfad)
     bild.thumbnail(max_groesse)
     puffer = BytesIO()
-    bild.save(puffer, format="JPEG", quality=50)
+    bild.save(puffer, format="JPEG", quality=70)
     return base64.b64encode(puffer.getvalue()).decode("utf-8")
 
 
