@@ -20,7 +20,7 @@ def bild_komprimieren(bildpfad, max_groesse=(1280, 1280)):
     bild = Image.open(bildpfad)
     bild.thumbnail(max_groesse)
     puffer = BytesIO()
-    bild.save(puffer, format="JPEG", quality=80)
+    bild.save(puffer, format="JPEG", quality=50)
     return base64.b64encode(puffer.getvalue()).decode("utf-8")
 
 
@@ -185,7 +185,7 @@ def speichere_analyse_ergebnisse(bild_dateiname, analyse_daten, tokens_verbrauch
             "source_image": bild_dateiname,
             "analysis_time": datetime.now().isoformat(),
             "tokens_used": tokens_verbraucht,
-            "model": "gpt-4o"
+            "model": "gpt-4o-mini"
         }
         
         with open(analyse_datei, 'w', encoding='utf-8') as datei:
