@@ -95,7 +95,7 @@ def analysiere_mit_openai(bild_base64):
                     ]
                 }
             ],
-            "max_tokens": 1000
+            "max_tokens": 2000
         }
 
         
